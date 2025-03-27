@@ -28,14 +28,14 @@ build:
 requirements:
   build:
     - ${{ compiler('rust') }}
-    - if: linux and not x86_64
+    - if: linux and (aarch64 or ppc64le)
       then:
         - ${{ compiler('c') }}
     - ${{ stdlib('c') }}
     - cargo-bundle-licenses
   run:
-    - ${{ compiler('rust') }}
     - llvm-tools
+    - rust
 
 tests:
   - package_contents:
@@ -62,7 +62,8 @@ tests:
   - script:
       - if: osx or arm64
         then:
-          - echo "Skipping tests on this platform"
+          - test $(file $PREFIX/bin/cargo-cov | grep -q 'Mach-O 64-bit executable arm64')
+          - test $(file $PREFIX/bin/rust-cov | grep -q 'Mach-O 64-bit executable arm64')
           - exit 0
 
       - if: linux and (aarch64 or ppc64le)
