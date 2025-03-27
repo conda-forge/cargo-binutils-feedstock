@@ -65,9 +65,8 @@ tests:
           - echo "Skipping tests on this platform"
           - exit 0
 
-      - if: linux and aarch64
+      - if: linux and (aarch64 or ppc64le)
         then:
-          - ls -l $PREFIX/lib/libgcc_s.so*
           - export LD_PRELOAD=$PREFIX/lib/libgcc_s.so.1
       - cargo-cov --version
       - cargo-nm --version
