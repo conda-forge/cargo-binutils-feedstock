@@ -23,7 +23,7 @@ build:
     - if: not unix
       then:
         - cargo install --locked --bins --root %PREFIX% --path . --no-track
-      - cargo-bundle-licenses --format yaml --output THIRDPARTY.yml
+    - cargo-bundle-licenses --format yaml --output THIRDPARTY.yml
 
 requirements:
   build:
