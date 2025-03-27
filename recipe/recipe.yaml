@@ -33,9 +33,6 @@ requirements:
   run:
     - ${{ compiler('rust') }}
     - llvm-tools
-    - if: linux-aarch64 or linux-ppc64le
-      then:
-        - libgcc
 
 tests:
   - package_contents:
@@ -60,9 +57,12 @@ tests:
         - rust-size
         - rust-strip
   - script:
-      # - if: linux and not x86_64
-      #   then:
-      #     - export LD_LIBRARY_PATH=$(llvm-config --libdir):$LD_LIBRARY_PATH
+      - if: linux and not x86_64
+        then:
+          - export LD_LIBRARY_PATH=$(llvm-config --libdir):$LD_LIBRARY_PATH
+      - if: osx-arm64
+        then:
+          - file $PREFIX/bin/cargo-cov
       - cargo-cov --version
       - cargo-nm --version
       - cargo-objcopy --version
