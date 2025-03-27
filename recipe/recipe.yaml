@@ -60,7 +60,7 @@ tests:
         - rust-size
         - rust-strip
   - script:
-      - if: not osx or not arm64
+      - if: osx or arm64
         then:
           - echo "Skipping tests on this platform"
           - exit 0
