@@ -27,6 +27,9 @@ requirements:
     - ${{ compiler('rust') }}
     - ${{ stdlib('c') }}
     - cargo-bundle-licenses
+    - if: linux and not x86_64
+      then:
+        - ${{ compiler('c') }}
   run:
     - llvm-tools
     - rust
