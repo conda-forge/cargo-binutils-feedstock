@@ -14,22 +14,26 @@ build:
   number: 1
 
   script:
-    - if: unix
+    - if: linux or (osx and x86_64)
       then:
         - cargo install --locked --bins --root ${PREFIX} --path . --no-track
-        - cargo-bundle-licenses --format yaml --output ${SRC_DIR}/THIRDPARTY.yml
-      else:
+    - if: osx and arm64
+      then:
+        - cargo install --target aarch64-apple-darwin --locked --bins --root ${PREFIX} --path . --no-track
+    - if: not unix
+      then:
         - cargo install --locked --bins --root %PREFIX% --path . --no-track
-        - cargo-bundle-licenses --format yaml --output %SRC_DIR%\THIRDPARTY.yml
+      - cargo-bundle-licenses --format yaml --output THIRDPARTY.yml
 
 requirements:
   build:
     - ${{ compiler('rust') }}
     - ${{ stdlib('c') }}
     - cargo-bundle-licenses
+  host:
     - if: linux and not x86_64
       then:
-        - ${{ compiler('c') }}
+        - libgcc
   run:
     - llvm-tools
     - rust
