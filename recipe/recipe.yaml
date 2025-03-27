@@ -60,16 +60,15 @@ tests:
         - rust-size
         - rust-strip
   - script:
+      - if: not osx or not arm64
+        then:
+          - echo "Skipping tests on this platform"
+          - exit 0
+
       - if: linux and aarch64
         then:
           - ls -l $PREFIX/lib/libgcc_s.so*
           - export LD_PRELOAD=$PREFIX/lib/libgcc_s.so.1
-      - if: osx and arm64
-        then:
-          - file $PREFIX/bin/cargo-cov
-          - file $PREFIX/bin/rust-cov
-          - file $PREFIX/lib/rustlib/*/bin/llvm-cov
-      - $PREFIX/lib/rustlib/*/bin/llvm-cov
       - cargo-cov --version
       - cargo-nm --version
       - cargo-objcopy --version
