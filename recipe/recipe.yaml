@@ -36,6 +36,9 @@ requirements:
   run:
     - llvm-tools
     - rust
+    - if: linux and (aarch64)
+      then:
+        - zlib
 
 tests:
   - package_contents:
